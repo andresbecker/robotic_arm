@@ -22,21 +22,15 @@ Servo xServo2;
 Servo yServo2;
 Servo pincerServo;
 
-// Constants
-float JoystickRate = 1;
-int AngLimInf = 0;
-int AngLimSup = 170;
+float xRate = 0.0;
+float xSum = 0.0;
+float yRate = 0.0;
+float ySum = 0.0;
 
-
-float xRate = 0;
-float xSum = 0;
-float yRate = 0;
-float ySum = 0;
-
-float xRate2 = 0;
-float xSum2 = 0;
-float yRate2 = 0;
-float ySum2 = 0;
+float xRate2 = 0.0;
+float xSum2 = 0.0;
+float yRate2 = 0.0;
+float ySum2 = 0.0;
 
 // Set input for Joystick
 int xPin = A0;
@@ -50,6 +44,12 @@ int pincerPin = A4;
 int pincerPos = 0;
 //int pincerAng = AngLimSup;
 int pincerAng = 90;
+
+// Set input pin for Variable resistance (arm movement speed)
+int speedPin = A5;
+float MovSpeed = 1;
+float JoystickRate = 1;
+float temp = 1;
 
 // Set status vars
 int xPos = 0;
@@ -78,6 +78,8 @@ void setup() {
 
   //Pincer
   pinMode(pincerPin, INPUT);
+  //Speed of the arm
+  pinMode(speedPin, INPUT);
 
   //Servo setups
   xServo.attach(xServoPin);
@@ -104,6 +106,16 @@ void loop() {
   yPos2 = analogRead(yPin2);
   //buttonStat = digitalRead(buttonPin);
   pincerPos = analogRead(pincerPin);
+  MovSpeed = analogRead(speedPin);
+
+
+  // Speed of the arm
+  //JoystickRate = round(MovSpeed / 10.23) / 20.0;
+  JoystickRate = round(5 * MovSpeed / 1023.0);
+  /*Serial.print("ArmSpeed: ");
+  Serial.print(JoystickRate);
+  Serial.println("");*/
+
 
   // Process for firs Joystick and servos 1 & 2
   xRate = ((float)xPos - 510.0) / 510.0;
@@ -115,7 +127,7 @@ void loop() {
 
   // For lower forearm forward and backward movement
   xSum = xRate * JoystickRate;
-  if ((xSum < 1) && (-1 < xSum)){
+  if ((xSum < 0.9) && (-0.9 < xSum)){
     xSum = 0;
   }
   xAng = xAng - round(xSum);
@@ -133,7 +145,7 @@ void loop() {
 
   // For rotate the whole arm
   ySum = yRate2 * JoystickRate;
-  if ((ySum < 1) && (-1 < ySum)){
+  if ((ySum < 0.9) && (-0.9 < ySum)){
     ySum = 0;
   }
   yAng = yAng - round(ySum);
@@ -151,7 +163,7 @@ void loop() {
   
   // For upper forearm forward and backward movement
   xSum2 = xRate2 * JoystickRate;
-  if ((xSum2 < 1) && (-1 < xSum2)){
+  if ((xSum2 < 0.9) && (-0.9 < xSum2)){
     xSum2 = 0;
   }
   xAng2 = xAng2 + round(xSum2);
@@ -164,7 +176,7 @@ void loop() {
 
   // For rotation of the upper forearm
   ySum2 = yRate * JoystickRate;
-  if ((ySum2 < 1) && (-1 < ySum2)){
+  if ((ySum2 < 0.9) && (-0.9 < ySum2)){
     ySum2 = 0;
   }
   yAng2 = yAng2 + round(ySum2);
@@ -176,7 +188,7 @@ void loop() {
   }
 
   //Pincer
-  pincerAng = round((float)AngLimSup * ((float)pincerPos / 1023.0));
+  pincerAng = round(170.0 * ((float)pincerPos / 1023.0));
   if (pincerAng < 40) {
     pincerAng = 40;
   }
@@ -196,34 +208,6 @@ void loop() {
   yServo2.write(yAng2);
   pincerServo.write(pincerAng);
 
-  /*
-  Serial.print("X: ");
-  Serial.print(xPos);
-  //Serial.print(" | Y: ");
-  //Serial.print(yPos);
-  //Serial.print(" | Button: ");
-  //Serial.print(buttonStat);
-  Serial.println("");
-  Serial.print("xAng: ");
-  Serial.print(xAng);
-  Serial.println("");
-
-  Serial.print("xSum: ");
-  Serial.print(xSum);
-  Serial.println("");
-  
-  Serial.print("xRate: ");
-  Serial.print(xRate);
-  Serial.println("");
-  
-  Serial.println("");
-  
-  Serial.print("PincerPos: ");
-  Serial.println(pincerPos);
-  Serial.print("PincerAng: ");
-  Serial.println(pincerAng);
-  Serial.println("");
-*/
   delay(15);
   //delay(200);
 }

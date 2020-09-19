@@ -1,0 +1,33 @@
+###################
+#Controller Cable
+###################
+# Color | Component_out | Arduino_Pin
+#Power:
+  Brown:          5v  -
+  Brown/White:    GRD -
+
+#Joystick 1:
+  Green:          VRx  - A0
+  Green/White:    VRy  - A1
+
+  #Joystick 2:
+    Orange:       VRx  - A2
+    Orange/White: VRy  - A3
+
+  #Pincer:
+    Blue:         VR   - A4
+
+####################
+#Seep Potentiometer
+####################
+Arduino Pin: A5
+
+###################
+#Servos
+###################
+#Servo | Arduiono_Pin
+Servo1:   D3
+Servo2:   D5
+Servo3:   D6
+Servo4:   D9
+Servo5:   D10

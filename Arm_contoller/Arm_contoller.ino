@@ -23,7 +23,7 @@ Servo yServo2;
 Servo pincerServo;
 
 // Constants
-float JoystickRate = 2;
+float JoystickRate = 1;
 int AngLimInf = 0;
 int AngLimSup = 170;
 
@@ -109,45 +109,52 @@ void loop() {
   xRate = ((float)xPos - 510.0) / 510.0;
   yRate = ((float)yPos - 510.0) / 510.0;
 
+  // Process for second Joystick and servos 3 & 4
+  xRate2 = ((float)xPos2 - 510.0) / 510.0;
+  yRate2 = ((float)yPos2 - 510.0) / 510.0;
+
+  // For lower forearm forward and backward movement
   xSum = xRate * JoystickRate;
   if ((xSum < 1) && (-1 < xSum)){
     xSum = 0;
   }
-  ySum = yRate * JoystickRate;
-  if ((ySum < 1) && (-1 < ySum)){
-    ySum = 0;
-  }
-
-  xAng = xAng + round(xSum);
+  xAng = xAng - round(xSum);
   if (xAng < 10) {
     xAng = 10;
   }
   else if (xAng > 135) {
     xAng = 135;
   }
+  /* For calibration
+  Serial.print("xAng: ");
+  Serial.print(xAng);
+  Serial.println("");
+  */
 
-  yAng = yAng + round(ySum);
+  // For rotate the whole arm
+  ySum = yRate2 * JoystickRate;
+  if ((ySum < 1) && (-1 < ySum)){
+    ySum = 0;
+  }
+  yAng = yAng - round(ySum);
   if (yAng < 10) {
     yAng = 10;
   }
   else if (yAng > 170) {
     yAng = 170;
   }
-
-  // Process for second Joystick and servos 3 & 4
-  xRate2 = ((float)xPos2 - 510.0) / 510.0;
-  yRate2 = ((float)yPos2 - 510.0) / 510.0;
-
+  /* For calibration
+  Serial.print("yAng: ");
+  Serial.print(yAng);
+  Serial.println(""); */
+  
+  
+  // For upper forearm forward and backward movement
   xSum2 = xRate2 * JoystickRate;
   if ((xSum2 < 1) && (-1 < xSum2)){
     xSum2 = 0;
   }
-  ySum2 = yRate2 * JoystickRate;
-  if ((ySum2 < 1) && (-1 < ySum2)){
-    ySum2 = 0;
-  }
-
-  xAng2 = xAng2 - round(xSum2);
+  xAng2 = xAng2 + round(xSum2);
   if (xAng2 < 5) {
     xAng2 = 5;
   }
@@ -155,7 +162,12 @@ void loop() {
     xAng2 = 140;
   }
 
-  yAng2 = yAng2 - round(ySum2);
+  // For rotation of the upper forearm
+  ySum2 = yRate * JoystickRate;
+  if ((ySum2 < 1) && (-1 < ySum2)){
+    ySum2 = 0;
+  }
+  yAng2 = yAng2 + round(ySum2);
   if (yAng2 < 10) {
     yAng2 = 10;
   }
@@ -171,12 +183,12 @@ void loop() {
   else if (pincerAng > 120) {
     pincerAng = 120;
   }
-
+  /*
   Serial.print("Pincer: ");
   Serial.print(pincerAng);
   Serial.println("");
   Serial.println("");
-  
+  */
 
   xServo.write(xAng);
   yServo.write(yAng);
@@ -212,5 +224,6 @@ void loop() {
   Serial.println(pincerAng);
   Serial.println("");
 */
-  delay(50);
+  delay(15);
+  //delay(200);
 }

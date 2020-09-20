@@ -1,9 +1,11 @@
 # 4 Axis robotic arm controlled with Joysticks
-Robotic arm using Arduino UNO, servo motors and Joysticks
+Robotic arm using Arduino UNO, servo motors and Joysticks.
+
+<p align="center">
+  <img src="Photos_and_Videos/Presentation.jpg" alt="Size Limit CLI" width="500">
+</p>
 
 This repo contains the code and some resources to build a very simple robotic arm controlled by 2 Joysticks.
-
-![GIF demo](Photos_and_Videos/demo.gif)
 
 **Elements**
 ---
@@ -21,10 +23,12 @@ The needed elements were:
 
 It is fair to mention that I cheated and used some parts of another Arduino project for the articulations. However, with a small drill and some nuts and bolts it is also possible to do a pretty good job. The making of this Job took around a week.
 
+<p align="center">
+  <img src="Photos_and_Videos/demo.gif" width="300">
+</p>
+
 It is not hard to build the arm and program it, Therefore, some photos of it (and read of the code) will make the job of a proper circuit diagram (lack of time). So, don’t forget to take a look into the images!
 
-If you want to see the arm in action just click on the link below to see the video.
+If you want to see the arm in action, just take a look to the <a href="https://youtu.be/bT3EbzHVtbY">YouTube Video!</a>
 
-#<Video link>
-
-I hope that this information will help you in your project, so good luck!
+I hope that this information will help you in your project, so have fun!
